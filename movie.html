@@ -1,0 +1,23 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b0b10"><title>جزئیات فیلم | WestKid Movie</title><meta name="description" content="اطلاعات فیلم و سریال در WestKid Movie"><style>
+:root{font-family:Tahoma,Arial,sans-serif;color:#f5f5f7;background:#0b0b10}*{box-sizing:border-box}body{margin:0}header{background:#101016;border-bottom:1px solid #292932;padding:18px 5%;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-size:22px;font-weight:900;direction:ltr}.brand span{color:#f04452}a{color:inherit;text-decoration:none}.back{border:1px solid #42424b;border-radius:10px;padding:10px 14px;background:#20202a;font-size:13px}.wrap{max-width:1060px;margin:auto;padding:35px 5%}.panel{display:grid;grid-template-columns:minmax(190px,290px) 1fr;gap:35px;align-items:start;background:linear-gradient(135deg,#211a27,#14141b);border:1px solid #36313c;border-radius:24px;padding:28px}.poster{aspect-ratio:2/3;border-radius:16px;background:linear-gradient(145deg,#64324a,#181923);display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 20px 45px #0006}.poster img{width:100%;height:100%;object-fit:cover}.fallback{padding:15px;text-align:center;font-size:24px;font-weight:900;overflow-wrap:anywhere;direction:ltr}.eyebrow{color:#ff8995;font-weight:bold;font-size:13px}h1{font-size:clamp(26px,5vw,44px);line-height:1.5;margin:12px 0 4px}.en{direction:ltr;text-align:right;color:#aaaab4;font-size:18px}.facts{display:flex;flex-wrap:wrap;gap:10px;margin:25px 0}.chip{background:#292532;border:1px solid #443946;padding:10px 13px;border-radius:12px;font-size:14px}h2{font-size:21px;margin-top:26px}.description{color:#d3ced7;line-height:2.3;white-space:pre-wrap;overflow-wrap:anywhere}.error{padding:40px;text-align:center;border:1px solid #39313b;border-radius:18px;color:#ccc}footer{text-align:center;color:#777783;padding:35px 10px;font-size:12px}@media(max-width:650px){header{padding:15px 4%}.brand{font-size:18px}.wrap{padding:20px 4%}.panel{grid-template-columns:1fr;padding:19px;gap:22px}.poster{width:min(70%,270px);margin:auto}.facts{margin:17px 0}.chip{font-size:12px}}
+</style></head><body><header><a class="brand" href="index.html">WESTKID <span>MOVIE</span></a><a class="back" href="index.html">← بازگشت به فیلم‌ها</a></header><main class="wrap" id="content"><div class="error" role="status">در حال دریافت اطلاعات فیلم...</div></main><footer>WestKid Movie © معرفی فیلم و سریال</footer><script>
+const URL='https://luzdjmpkeiodcofwsphb.supabase.co';
+const KEY='sb_publishable_RJy1GZbMNSWct1RIQCeWjA_16ubpKsC';
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const content=document.getElementById('content');
+async function load(){
+ const id=new URLSearchParams(location.search).get('id');
+ if(!id||!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)){content.innerHTML='<div class="error">لینک فیلم معتبر نیست. <a href="index.html">بازگشت به صفحه اصلی</a></div>';return}
+ try{
+  const params=new URLSearchParams({select:'id,title,english_title,type,genre,release_year,rating,description,poster_url',id:'eq.'+id,limit:'1'});
+  const response=await fetch(URL+'/rest/v1/movies?'+params,{headers:{apikey:KEY}});
+  if(!response.ok)throw new Error('HTTP '+response.status);
+  const items=await response.json();const m=items[0];
+  if(!m){content.innerHTML='<div class="error">این فیلم پیدا نشد یا حذف شده است. <a href="index.html">بازگشت به صفحه اصلی</a></div>';return}
+  document.title=m.title+' | WestKid Movie';
+  const poster=m.poster_url&&/^https:\/\//i.test(m.poster_url)?'<img src="'+esc(m.poster_url)+'" alt="پوستر '+esc(m.title)+'">':'<div class="fallback">'+esc(m.english_title||m.title)+'</div>';
+  content.innerHTML='<article class="panel"><div class="poster">'+poster+'</div><div><div class="eyebrow">'+esc(m.type||'فیلم')+'</div><h1>'+esc(m.title)+'</h1><div class="en">'+esc(m.english_title||'')+'</div><div class="facts"><span class="chip">⭐ '+esc(m.rating??'—')+' / 10</span><span class="chip">📅 '+esc(m.release_year||'—')+'</span><span class="chip">🎭 '+esc(m.genre||'نامشخص')+'</span></div><h2>خلاصه داستان</h2><p class="description">'+esc(m.description||'هنوز خلاصه‌ای برای این اثر ثبت نشده است.')+'</p></div></article>';
+ }catch(e){content.innerHTML='<div class="error">دریافت اطلاعات ناموفق بود. اینترنت و تنظیمات سایت را بررسی کن.</div>'}
+}
+load();
+</script></body></html>
